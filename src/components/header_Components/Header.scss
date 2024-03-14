@@ -11,19 +11,7 @@
     text-align: center;
     color: $whiteColor;
     padding: 0.3em;
-
-    &__logo {
-        font-size: 1rem;
-        margin-top: 2em;
-        font-family: $ubuntuFont;
-        font-weight: bold;
-
-        &_container {
-            text-align: left;
-            margin: 0.5em 0.5em;
-
-        }
-    }
+    
     &__title {
         font-size: 1.7rem;
         font-family: $ubuntuMonoFont;
