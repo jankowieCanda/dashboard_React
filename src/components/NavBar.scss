@@ -1,0 +1,36 @@
+@import './stylesVar.scss';
+
+.nav {
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+
+    &__list {
+        list-style: none;
+        display: inline;
+        
+        &_item {
+            display: inline-flex;
+            align-items: center;
+            text-transform: capitalize;
+            cursor: pointer;
+
+            .icon {
+                width: 1em;
+                height: 1em;
+                margin-right: 0.5em;
+            }
+            #home, #myPhotos {
+                text-decoration: none;
+                color: $navItemsColor;
+                font-family: $nunitoFont;
+                font-weight: 500;
+                font-size: 0.7rem;
+                margin-right: 3em;
+            }
+        }
+        .active {
+            border-bottom: 1px solid $navItemsColor;
+        }
+    }
+}
