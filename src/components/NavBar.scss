@@ -3,7 +3,8 @@
 .nav {
     width: 90%;
     text-align: center;
-    margin: 0 auto;
+    margin: 0 auto $marginBottom;
+
 
     &__list {
         list-style: none;

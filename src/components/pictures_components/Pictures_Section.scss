@@ -1,0 +1,47 @@
+@import '../stylesVar.scss';
+
+.pictures {
+    width: 90%;
+    text-align: center;
+    margin: 0 auto $marginBottom;
+
+    &__picBox {
+        position: relative;
+        width: 80%;
+        margin: 0 auto $marginBottom;
+        
+
+        .photo {
+            width: 100%;
+            box-shadow: 3px 3px 3px rgb(169, 169, 169);
+            border-radius: 1em;
+        }
+
+        .optionsBar {
+            width: 100%;
+            position: absolute;
+            top: 0.5em;
+            display: flex;
+            justify-content: end;
+
+        }
+        .iconBox {
+            width: 1em;
+            height: 1em;
+            border-radius: 0.5em;
+            margin: 0 0.5em;
+            background-color: black;
+
+            .icon {
+                width: 1em;
+                height: 1em;
+            }
+        }
+        
+    }
+
+    .icon {
+        width: 1em;
+        height: 1em;
+    }
+}
