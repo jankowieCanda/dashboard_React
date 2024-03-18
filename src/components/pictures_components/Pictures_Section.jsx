@@ -1,37 +1,150 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getSearchError, getSearchPhotos, getSearchStatus } from '../../features/search/searchSlice'
-import { useEffect } from 'react'
-import { getSearchPhotosThunk } from '../../features/search/searchThunk'
-import { optionsBar } from './pictures_optionsBar';
+import { getSearchError, getSearchPhotos, getSearchStatus } from '../../features/search/searchSlice';
+import { useEffect, useState } from 'react';
+import { getSearchPhotosThunk } from '../../features/search/searchThunk';
+import { addFavorite, removeFavorite, getFavPhotos } from "../../features/favorite/favoriteSlice";
 import './Pictures_Section.scss';
+import { useLocation } from 'react-router-dom';
+
+let favData = localStorage.getItem('favData');
+let favs = JSON.parse(favData);
+const homeOptions = ['../src/assets/downloadIcon.png', '../src/assets/favoriteIcon.png'];
+const myPhotosOptions = ['../src/assets/downloadIcon.png', '../src/assets/trashIcon.png', '../src/assets/FavIcon.png'];
 
 export const Pictures_Section = () => {
     const dispatch = useDispatch();
     const photoList = useSelector(getSearchPhotos);
     const searchStatus = useSelector(getSearchStatus);
     const searchError = useSelector(getSearchError);
+    const favPhotos = useSelector(getFavPhotos);
+    const location = useLocation();
 
 
     useEffect(() => {
-    if(searchStatus === 'pending') {
-        console.log('pending');
-    } else if(searchStatus === 'rejected') {
-        console.log(`${searchStatus} - ${searchError}`);
-    } else if(searchStatus === 'fulfilled') {
-        console.log('fulfilled');
-    } else if(searchStatus === 'idle') {
-        dispatch(getSearchPhotosThunk());
-    }
+        if(searchStatus === 'pending') {
+            console.log('pending');
+        } else if(searchStatus === 'rejected') {
+            console.log(`${searchStatus} - ${searchError}`);
+        } else if(searchStatus === 'fulfilled') {
+            console.log('fulfilled');
+        } else if(searchStatus === 'idle') {
+            dispatch(getSearchPhotosThunk());
+        }
     }, [dispatch, photoList, searchStatus]);
 
-    const picture = photoList.map((photo, i) => {
-        return (
-            <div key={i} className='pictures__picBox'>
-                <img className='photo' src={photo.urls.full} alt={photo.alt_description} />
-                {optionsBar()}
-            </div>
-        )
-    })
+    const [picture, setPicture] = useState();
+
+    useEffect(() => {
+        if(location.pathname === '/') {
+            if(photoList) {
+                setPicture(() => {
+                    return photoList.map((photo, i) => {
+                        return (
+                            <div key={i} className='pictures__picBox'>
+                                <img id={`photo_${photo.id}`} className='photo' src={photo.urls.full} alt={photo.alt_description} /> 
+                                <div className="optionsBar">
+                                    <div className="iconBox">
+                                        <img id={`download_${photo.id}`} className='icon download' src={homeOptions[0]} alt='download' onClick={handleClick}/>
+                                    </div>
+                                    <div className="iconBox">
+                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={favs !== null && favs.includes(photo.id) ? myPhotosOptions[2] : homeOptions[1]} alt='favorite' onClick={handleClick}/>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    });
+                });
+            }
+            
+        } else if(location.pathname === '/myPhotos') {
+            if(favs) {                
+                // console.log(favs)
+
+                setPicture(() => {
+                    return favs.map((photo, i) => {
+                        return (
+                            <div key={i} className='pictures__picBox'>
+                                <img id={`photo_${photo.id}`} className='photo' src={photo.url} alt={photo.alt_description} /> 
+                                <div className="optionsBar">
+                                    <div className="iconBox">
+                                        <img id={`download_${photo.id}`} className='icon download' src={myPhotosOptions[0]} alt='download' onClick={handleClick}/>
+                                    </div>
+                                    <div className="iconBox">
+                                        <img id={`trash_${photo.id}`} className='icon trash' src={myPhotosOptions[1]} alt='trash' onClick={handleClick}/>
+                                    </div>
+                                    <div className="iconBox">
+                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={myPhotosOptions[2]} alt='favorite' onClick={handleClick}/>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    });
+                });
+            }
+        }
+        
+    }, [photoList, favPhotos, location])
+
+    const handleClick = (event) => {
+        let btn = event.target;
+        photoList.forEach((pic) => {
+
+            if(btn.id.match(pic.id) && btn.alt === 'favorite') {
+                if(favs !== null){
+                    if((btn.src).match('favoriteIcon.png') && !favs.includes(pic.id)){
+                        btn.src = '../src/assets/FavIcon.png';
+                        let favoritePic = {
+                            id: pic.id,
+                            width: pic.width,
+                            height: pic.height,
+                            likes: pic.likes,
+                            created_at: pic.created_at,
+                            url: pic.urls.full,
+                            alt_description: pic.alt_description
+                        }
+                        dispatch(addFavorite(favoritePic));
+                        // console.log(favoritePic)
+    
+                    } else if((btn.src).match('FavIcon.png') && favs.includes(pic.id)){
+                        btn.src = '../src/assets/favoriteIcon.png';
+                        console.log(favPhotos)
+                        dispatch(removeFavorite(pic.id));
+                    }       
+                } else if(favs === null) {
+                    if((btn.src).match('favoriteIcon.png')){
+                        btn.src = '../src/assets/FavIcon.png';
+                        let favoritePic = {
+                            id: pic.id,
+                            width: pic.width,
+                            height: pic.height,
+                            likes: pic.likes,
+                            created_at: pic.created_at,
+                            url: pic.urls.full,
+                            alt_description: pic.alt_description
+                        }
+                        dispatch(addFavorite(favoritePic));
+                        // console.log(favoritePic)
+                    }
+                }
+                
+            } else if (btn.id.match(pic.id) && btn.alt === 'favorite' && favs.includes(pic.id)) {
+                btn.src = '../src/assets/FavIcon.png';
+                dispatch(removeFavorite(pic.id));
+            } else if(btn.id.match(pic.id) && btn.alt === 'download') {
+                let key = import.meta.env.VITE_ACCESS_KEY;
+
+                const downloadPhoto = async () => {
+                    const request = await fetch(`${pic.links.download_location}/${key}`);
+                    const data = await request.json();
+                    // console.log(data)
+                    return data;
+                };
+
+                dispatch(downloadPhoto);
+                console.log('downloaded');
+            }
+        });
+    }
 
     return (
         <section className="pictures">{picture}</section>

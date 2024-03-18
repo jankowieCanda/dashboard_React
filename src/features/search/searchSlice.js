@@ -22,6 +22,7 @@ export const searchSlice = createSlice({
         }).addCase(getSearchPhotosThunk.fulfilled, (state, action) => {
             state.data = action.payload;
             state.status = 'fulfilled';
+            console.log(state.data)
         })
     }
 });
