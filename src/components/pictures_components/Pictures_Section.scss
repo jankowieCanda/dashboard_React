@@ -1,3 +1,4 @@
+@use "sass:math";
 @import '../stylesVar.scss';
 
 .pictures {
@@ -5,6 +6,12 @@
     text-align: center;
     margin: 0 auto $marginBottom;
 
+    &__border {
+        border: 1px solid black;
+        margin-bottom: $marginBottom;
+        padding-top: 1em;
+        border-radius: 1em;
+    }
     &__picBox {
         position: relative;
         width: 80%;
@@ -15,6 +22,7 @@
             width: 100%;
             box-shadow: 3px 3px 3px rgb(169, 169, 169);
             border-radius: 1em;
+            margin-bottom: math.div($marginBottom, 2);
         }
 
         .optionsBar {
@@ -31,10 +39,42 @@
             border-radius: 0.5em;
             margin: 0 0.5em;
             background-color: black;
+        }
+        .descriptions {
+            position: relative;
+            border: 1px solid black;
+            border-radius: 0.5em;
+            padding: 0 1em 1em;
 
-            .icon {
-                width: 1em;
-                height: 1em;
+            .edit {
+                position: absolute;
+                right: 0.5em;
+                top: 0.2em;
+            }
+            &__title {
+                margin-bottom: $marginBottom;
+                font-family: $nunitoFont;
+                font-size: 1.1rem;
+            }
+            &__boxList {
+
+                &_list {
+                    list-style: none;
+                    padding: 0;
+                    text-align: left;
+
+                    &-item {
+                        font-family: $nunitoFont;
+                        font-size: 0.7rem;
+                        font-weight: 100;
+
+                        span {
+                            font-weight: 500;
+                            font-style: italic;
+                            font-size: 0.8rem;
+                        }
+                    }
+                }
             }
         }
         

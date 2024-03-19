@@ -62,18 +62,33 @@ export const Pictures_Section = () => {
 
                 setPicture(() => {
                     return favs.map((photo, i) => {
+                        let date = new Date(photo.created_at).toLocaleDateString();
                         return (
-                            <div key={i} className='pictures__picBox'>
-                                <img id={`photo_${photo.id}`} className='photo' src={photo.url} alt={photo.alt_description} /> 
-                                <div className="optionsBar">
-                                    <div className="iconBox">
-                                        <img id={`download_${photo.id}`} className='icon download' src={myPhotosOptions[0]} alt='download' onClick={handleClick}/>
+                            <div key={i} className='pictures__border'>
+                                <div className='pictures__picBox'>
+                                    <img id={`photo_${photo.id}`} className='photo' src={photo.url} alt={photo.alt_description} /> 
+                                    <div className="optionsBar">
+                                        <div className="iconBox">
+                                            <img id={`download_${photo.id}`} className='icon download' src={myPhotosOptions[0]} alt='download' onClick={handleClick}/>
+                                        </div>
+                                        <div className="iconBox">
+                                            <img id={`trash_${photo.id}`} className='icon trash' src={myPhotosOptions[1]} alt='trash' onClick={handleClick}/>
+                                        </div>
+                                        <div className="iconBox">
+                                            <img id={`favorite_${photo.id}`} className='icon favorite' src={myPhotosOptions[2]} alt='favorite' onClick={handleClick}/>
+                                        </div>
                                     </div>
-                                    <div className="iconBox">
-                                        <img id={`trash_${photo.id}`} className='icon trash' src={myPhotosOptions[1]} alt='trash' onClick={handleClick}/>
-                                    </div>
-                                    <div className="iconBox">
-                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={myPhotosOptions[2]} alt='favorite' onClick={handleClick}/>
+                                    <div className="descriptions">
+                                        <h3 className="descriptions__title">Descriptions</h3> 
+                                        <img id={`edit_${photo.id}`} className='icon edit' src='../src/assets/editIcon.png' alt='edit' onClick={handleClick} />
+                                        <div className='descriptions__boxList'>
+                                            <ul className='descriptions__boxList_list'>
+                                                <li className='descriptions__boxList_list-item'><span>Width:</span> {photo.width}</li>
+                                                <li className='descriptions__boxList_list-item'><span>Height:</span> {photo.height}</li>
+                                                <li className='descriptions__boxList_list-item'><span>Likes:</span> {photo.likes}</li>
+                                                <li className='descriptions__boxList_list-item'><span>Created at:</span> {date}</li>
+                                            </ul>
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +120,7 @@ export const Pictures_Section = () => {
                         dispatch(addFavorite(favoritePic));
                         // console.log(favoritePic)
     
-                    } else if((btn.src).match('FavIcon.png') && favs.includes(pic.id)){
+                    } else if((btn.src).match('FavIcon.png')){
                         btn.src = '../src/assets/favoriteIcon.png';
                         console.log(favPhotos)
                         dispatch(removeFavorite(pic.id));
@@ -142,11 +157,20 @@ export const Pictures_Section = () => {
 
                 dispatch(downloadPhoto);
                 console.log('downloaded');
+            } else if(btn.id.match(pic.id) && btn.alt === 'trash') {
+                dispatch(removeFavorite(pic.id));
+                console.log('deleted');
+            }
+            else if(btn.id.match(pic.id) && btn.alt === 'edit') {
+                
+                console.log('edit');
             }
         });
     }
 
+    
     return (
+
         <section className="pictures">{picture}</section>
     )
 }
