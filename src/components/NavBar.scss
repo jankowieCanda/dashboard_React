@@ -20,6 +20,7 @@
                 width: 1em;
                 height: 1em;
                 margin-right: 0.5em;
+                
             }
             #home, #myPhotos {
                 text-decoration: none;
@@ -31,7 +32,39 @@
             }
         }
         .active {
-            border-bottom: 1px solid $navItemsColor;
+            border-bottom: 0.2em solid $navItemsColor;
+            border-radius: 0.2em;
+        }
+        
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .nav {    
+        margin-top: 1.5em;
+
+        &__list {
+            width: 50%;
+            
+            &_item {
+                width: 15em;
+                margin: 0.5em 5em;
+                justify-content: space-evenly;
+
+                .icon {
+                    width: 2.5em;
+                    height: 2.5em;
+                    margin-right: 0;
+                }
+                #home, #myPhotos {
+                    font-size: 1.5rem;
+                    margin-right: 2em;
+                }
+            }
+            .active {
+                border-bottom: 0.5em solid $navItemsColor;
+                border-radius: 0.5em;
+            }
         }
     }
 }

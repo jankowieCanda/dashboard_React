@@ -10,7 +10,7 @@ import { createPortal } from 'react-dom';
  
 let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
-console.log(favs)
+// console.log(favs)
 const homeOptions = ['../src/assets/downloadIcon.png', '../src/assets/favoriteIcon.png'];
 const myPhotosOptions = ['../src/assets/downloadIcon.png', '../src/assets/trashIcon.png', '../src/assets/FavIcon.png'];
 
@@ -38,7 +38,7 @@ export const Pictures_Section = () => {
 
     useEffect(() => {
         if(location.pathname === '/') {
-            if(photoList) {
+            if(photoList.lenght > 0) {
                 setPicture(() => {
                     return photoList.map((photo, i) => {
                         return (
@@ -59,9 +59,7 @@ export const Pictures_Section = () => {
             }
             
         } else if(location.pathname === '/myPhotos') {
-            if(favs) {                
-                // console.log(favs)
-
+            if(favs.lenght > 0) {
                 setPicture(() => {
                     return favs.map((photo, i) => {
                         return (
@@ -124,11 +122,9 @@ export const Pictures_Section = () => {
                             alt_description: pic.alt_description
                         }
                         dispatch(addFavorite(favoritePic));
-                        // console.log(favoritePic)
     
                     } else if((btn.src).match('FavIcon.png')){
                         btn.src = '../src/assets/favoriteIcon.png';
-                        console.log(favPhotos)
                         dispatch(removeFavorite(pic.id));
                     }       
                 } else if(favs === null) {
@@ -144,7 +140,6 @@ export const Pictures_Section = () => {
                             alt_description: pic.alt_description
                         }
                         dispatch(addFavorite(favoritePic));
-                        // console.log(favoritePic)
                     }
                 }
                 
@@ -157,7 +152,6 @@ export const Pictures_Section = () => {
                 const downloadPhoto = async () => {
                     const request = await fetch(`${pic.links.download_location}/${key}`);
                     const data = await request.json();
-                    // console.log(data)
                     return data;
                 };
 
@@ -172,7 +166,7 @@ export const Pictures_Section = () => {
                 setId(pic.id);
                 seturl(pic.urls.full)
                 setAlt(pic.alt_description)
-                console.log('edit');
+                // console.log('edit');
             }
         });
     }
