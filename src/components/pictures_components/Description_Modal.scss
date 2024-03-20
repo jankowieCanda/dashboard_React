@@ -1,0 +1,70 @@
+@use 'sass:math';
+@import '../stylesVar.scss';
+
+body {
+    position: relative;
+}
+.descriptions__modal {
+    display: block;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(67, 101, 255, 0.614);
+    border: none;
+
+
+    &_form {
+        position: fixed;
+        top: 50%;
+        left: 10%;
+        width: 80%;
+        text-align: center; 
+        
+        .form__boxAttribute {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: math.div($marginBottom, 2);
+            
+            label {
+                color: $whiteColor;
+                font-family: $nunitoFont;
+                font-size: 1rem;
+                font-style: italic;
+                font-weight: 300;
+            }
+            input {
+                width: 16em;
+                border: 1px solid rgb(67, 101, 255);
+                border-radius: 0.5em;
+                font-family: $ubuntuMonoFont;
+                font-size: 0.7rem;
+                text-align: center;
+            }
+            
+        }
+        .form__btn {
+            background-color: rgb(67, 101, 255);
+            color: $whiteColor;
+            width: 6em;
+            padding: 0.25em;
+            border: none;
+            border-top-right-radius: 1em;
+            border-bottom-left-radius: 1em;
+            border-bottom: 1px solid $whiteColor;
+            box-shadow: 4px 4px 4px $whiteColor;
+            cursor: pointer;
+            margin-right: 2em;
+            font-family: $ubuntuMonoFont;
+            
+            &_discard {
+                background-color: rgb(255, 129, 129);
+            }
+        }
+        .form__btn:active {
+            transform: scale(0.9);
+        }
+        
+    }
+    
+}

@@ -5,7 +5,9 @@ import { getSearchPhotosThunk } from '../../features/search/searchThunk';
 import { addFavorite, removeFavorite, getFavPhotos } from "../../features/favorite/favoriteSlice";
 import './Pictures_Section.scss';
 import { useLocation } from 'react-router-dom';
-
+import { Descriptions_Modal } from './Descriptions_Modal';
+import { createPortal } from 'react-dom';
+ 
 let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
 const homeOptions = ['../src/assets/downloadIcon.png', '../src/assets/favoriteIcon.png'];
@@ -18,7 +20,6 @@ export const Pictures_Section = () => {
     const searchError = useSelector(getSearchError);
     const favPhotos = useSelector(getFavPhotos);
     const location = useLocation();
-
 
     useEffect(() => {
         if(searchStatus === 'pending') {
@@ -62,7 +63,6 @@ export const Pictures_Section = () => {
 
                 setPicture(() => {
                     return favs.map((photo, i) => {
-                        let date = new Date(photo.created_at).toLocaleDateString();
                         return (
                             <div key={i} className='pictures__border'>
                                 <div className='pictures__picBox'>
@@ -86,7 +86,7 @@ export const Pictures_Section = () => {
                                                 <li className='descriptions__boxList_list-item'><span>Width:</span> {photo.width}</li>
                                                 <li className='descriptions__boxList_list-item'><span>Height:</span> {photo.height}</li>
                                                 <li className='descriptions__boxList_list-item'><span>Likes:</span> {photo.likes}</li>
-                                                <li className='descriptions__boxList_list-item'><span>Created at:</span> {date}</li>
+                                                <li className='descriptions__boxList_list-item'><span>Created at:</span> {photo.created_at}</li>
                                             </ul>
                                         </div> 
                                     </div>
@@ -99,6 +99,9 @@ export const Pictures_Section = () => {
         }
         
     }, [photoList, favPhotos, location])
+
+    const [showModal, setShowModal] = useState(false);
+    const [id, setId] = useState('');
 
     const handleClick = (event) => {
         let btn = event.target;
@@ -162,7 +165,8 @@ export const Pictures_Section = () => {
                 console.log('deleted');
             }
             else if(btn.id.match(pic.id) && btn.alt === 'edit') {
-                
+                setShowModal(true);
+                setId(pic.id);
                 console.log('edit');
             }
         });
@@ -170,7 +174,16 @@ export const Pictures_Section = () => {
 
     
     return (
-
-        <section className="pictures">{picture}</section>
+        
+        <>
+            <section className="pictures">
+                {picture}
+                {showModal && createPortal (
+                    <Descriptions_Modal data={{id, url, alt_description}} setShowModal={setShowModal}/>,
+                    document.body
+                )
+                }
+            </section>
+        </>
     )
 }
