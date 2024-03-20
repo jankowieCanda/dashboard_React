@@ -10,6 +10,7 @@ import { createPortal } from 'react-dom';
  
 let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
+console.log(favs)
 const homeOptions = ['../src/assets/downloadIcon.png', '../src/assets/favoriteIcon.png'];
 const myPhotosOptions = ['../src/assets/downloadIcon.png', '../src/assets/trashIcon.png', '../src/assets/FavIcon.png'];
 
@@ -48,7 +49,7 @@ export const Pictures_Section = () => {
                                         <img id={`download_${photo.id}`} className='icon download' src={homeOptions[0]} alt='download' onClick={handleClick}/>
                                     </div>
                                     <div className="iconBox">
-                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={favs !== null && favs.includes(photo.id) ? myPhotosOptions[2] : homeOptions[1]} alt='favorite' onClick={handleClick}/>
+                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={homeOptions[1]} alt='favorite' onClick={handleClick}/>
                                     </div>
                                 </div>
                             </div>
@@ -102,6 +103,8 @@ export const Pictures_Section = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [id, setId] = useState('');
+    const [url, seturl] = useState('');
+    const [alt, setAlt] = useState('');
 
     const handleClick = (event) => {
         let btn = event.target;
@@ -167,6 +170,8 @@ export const Pictures_Section = () => {
             else if(btn.id.match(pic.id) && btn.alt === 'edit') {
                 setShowModal(true);
                 setId(pic.id);
+                seturl(pic.urls.full)
+                setAlt(pic.alt_description)
                 console.log('edit');
             }
         });
@@ -179,7 +184,7 @@ export const Pictures_Section = () => {
             <section className="pictures">
                 {picture}
                 {showModal && createPortal (
-                    <Descriptions_Modal data={{id, url, alt_description}} setShowModal={setShowModal}/>,
+                    <Descriptions_Modal data={{id, url, alt}} setShowModal={setShowModal}/>,
                     document.body
                 )
                 }
