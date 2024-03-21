@@ -3,20 +3,12 @@
 
 .pictures {
     width: 90%;
-    text-align: center;
-    margin: 0 auto $marginBottom;
+    margin: 0 auto;
 
-    &__border {
-        border: 1px solid black;
-        margin-bottom: $marginBottom;
-        padding-top: 1em;
-        border-radius: 1em;
-    }
     &__picBox {
         position: relative;
         width: 80%;
         margin: 0 auto $marginBottom;
-        
 
         .photo {
             width: 100%;
@@ -24,7 +16,6 @@
             border-radius: 1em;
             margin-bottom: math.div($marginBottom, 2);
         }
-
         .optionsBar {
             width: 100%;
             position: absolute;
@@ -40,11 +31,51 @@
             margin: 0 0.5em;
             background-color: black;
         }
+    }
+    &__border {
+        width: 90%;
+        margin: 0 auto;
+        border: 1px solid black;
+        margin-bottom: $marginBottom;
+        padding-top: 1em;
+        border-radius: 1em;
+    }
+    &__favBox {
+        width: 95%;
+        text-align: center;
+        margin: 0 auto;
+        position: relative;
+
+        .favphoto {
+            max-width: 90%;
+            box-shadow: 3px 3px 3px rgb(169, 169, 169);
+            border-radius: 1em;
+            margin-bottom: math.div($marginBottom, 2);
+
+        }
+        .optionsFavBar {
+            width: 90%;
+            position: absolute;
+            top: 0.5em;
+            display: flex;
+            justify-content: end;
+
+            .favIconBox {
+                width: 1em;
+                height: 1em;
+                border-radius: 0.5em;
+                margin: 0 0.5em;
+                background-color: black;
+            }
+        }
         .descriptions {
+            width: 90%;
+            margin: 0 auto;
             position: relative;
             border: 1px solid black;
             border-radius: 0.5em;
             padding: 0 1em 1em;
+            margin-bottom: $marginBottom;
 
             .edit {
                 position: absolute;
@@ -77,11 +108,85 @@
                 }
             }
         }
-        
     }
-
     .icon {
         width: 1em;
         height: 1em;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .pictures {
+        display: flex; 
+        flex-wrap: wrap;
+        align-content: flex-start;
+        justify-content: center;
+        column-gap: 0.5em;
+
+        &__border {
+            width: 23%;
+            height: fit-content;
+        }
+        &__picBox {
+            width: 20%;
+            max-height: 16em;
+            flex-grow: 1;
+
+            .photo {
+                min-width: 100%;
+                max-height: 100%;
+                object-fit: cover;
+                vertical-align: bottom;
+            }
+            .optionsBar {
+                top: 1em;    
+            }
+            .iconBox {
+                width: 2em;
+                height: 2em;
+                border-radius: 1em;
+                margin: 0 1em;
+                background-color: black;
+            }
+        }
+        .icon {
+            width: 2em;
+            height: 2em;
+        }
+        &__favBox {
+    
+            .favphoto {
+                max-width: 100%;
+            }
+            .optionsFavBar {
+    
+                .favIconBox {
+                    width: 2em;
+                    height: 2em;
+                    border-radius: 1em;
+                }
+            }
+            .descriptions {
+                width: 98%;
+                margin-bottom: $marginBottom * 2;
+    
+                &__title {
+                    font-size: 1.5rem;
+                }
+                &__boxList {
+    
+                    &_list {
+    
+                        &-item {
+                            font-size: 1.2rem;
+    
+                            span {
+                                font-size: 1.3rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

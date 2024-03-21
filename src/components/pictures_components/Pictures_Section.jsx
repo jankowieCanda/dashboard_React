@@ -38,7 +38,7 @@ export const Pictures_Section = () => {
 
     useEffect(() => {
         if(location.pathname === '/') {
-            if(photoList.lenght > 0) {
+            if(photoList) {
                 setPicture(() => {
                     return photoList.map((photo, i) => {
                         return (
@@ -59,21 +59,21 @@ export const Pictures_Section = () => {
             }
             
         } else if(location.pathname === '/myPhotos') {
-            if(favs.lenght > 0) {
+            if(favs) {
                 setPicture(() => {
                     return favs.map((photo, i) => {
                         return (
                             <div key={i} className='pictures__border'>
-                                <div className='pictures__picBox'>
-                                    <img id={`photo_${photo.id}`} className='photo' src={photo.url} alt={photo.alt_description} /> 
-                                    <div className="optionsBar">
-                                        <div className="iconBox">
+                                <div className='pictures__favBox'>
+                                    <img id={`photo_${photo.id}`} className='favphoto' src={photo.url} alt={photo.alt_description} /> 
+                                    <div className="optionsFavBar">
+                                        <div className="favIconBox">
                                             <img id={`download_${photo.id}`} className='icon download' src={myPhotosOptions[0]} alt='download' onClick={handleClick}/>
                                         </div>
-                                        <div className="iconBox">
+                                        <div className="favIconBox">
                                             <img id={`trash_${photo.id}`} className='icon trash' src={myPhotosOptions[1]} alt='trash' onClick={handleClick}/>
                                         </div>
-                                        <div className="iconBox">
+                                        <div className="favIconBox">
                                             <img id={`favorite_${photo.id}`} className='icon favorite' src={myPhotosOptions[2]} alt='favorite' onClick={handleClick}/>
                                         </div>
                                     </div>
