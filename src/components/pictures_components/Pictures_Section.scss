@@ -7,8 +7,11 @@
 
     .searchBar {
         position: absolute;
-        top: 15em;
+        top: 8em;
+        left: 2.5em;
+        right: 2.5em;
         margin-bottom: $marginBottom;
+        text-align: center;
 
         &__form {
             margin: 0 auto;
@@ -174,6 +177,8 @@
         column-gap: 0.5em;
 
         .searchBar {
+            top: 15em;
+            margin-bottom: $marginBottom;
 
             &__form {
     
