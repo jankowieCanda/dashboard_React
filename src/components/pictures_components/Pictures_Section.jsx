@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchError, getSearchPhotos, getSearchStatus, getSearchResult, resultList } from '../../features/search/searchSlice';
 import { useEffect, useState } from 'react';
-import { getSearchPhotosThunk } from '../../features/search/searchThunk';
+import { getSearchPhotosThunk, getSearchResultThunk } from '../../features/search/searchThunk';
 import { addFavorite, removeFavorite, getFavPhotos } from "../../features/favorite/favoriteSlice";
 import './Pictures_Section.scss';
 import { useLocation } from 'react-router-dom';
@@ -10,7 +10,6 @@ import { createPortal } from 'react-dom';
  
 let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
-// console.log(favs)
 const homeOptions = ['../src/assets/downloadIcon.png', '../src/assets/favoriteIcon.png'];
 const myPhotosOptions = ['../src/assets/downloadIcon.png', '../src/assets/trashIcon.png', '../src/assets/FavIcon.png'];
 
@@ -23,39 +22,48 @@ export const Pictures_Section = () => {
     const favPhotos = useSelector(getFavPhotos);
     const location = useLocation();
     const [searchResult, setSearchResult] = useState('');
-    const [isLoggin, setIsLoggin] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(searchStatus === 'pending') {
             console.log('pending');
-            setIsLoggin(true);
+            setIsLoading(true);
         } else if(searchStatus === 'rejected') {
             console.log(`${searchStatus} - ${searchError}`);
         } else if(searchStatus === 'fulfilled') {
             console.log('fulfilled');
-            setSearchResult(photoList);
-            setIsLoggin(false);
+            setIsLoading(false);
         } else if(searchStatus === 'idle') {
             dispatch(getSearchPhotosThunk());
+            if(searchInput){
+                dispatch(getSearchResultThunk(searchInput))
+                setSearchResult(searchList['results']);
+            } else {
+                setSearchResult(photoList)
+            }
         }
-    }, [dispatch, photoList, searchStatus]);
+    }, [dispatch, searchList, photoList, searchStatus]);
 
-   
+    
     const [picture, setPicture] = useState();
     const [searchInput, setSearchInput] = useState('');
     const [select, setSelect] = useState('');
 
-    const handleClickSearch = (/* e */) => {
-        setSearchResult(() => searchResult.filter((item, i) => item.alt_description.includes(searchInput)));
+    
+
+    const handleClickSearch = (e) => {
+        e.preventDefault();
+        dispatch(getSearchResultThunk(searchInput))
+        setSearchResult(() => searchList.filter((item, i) => item.alt_description.includes(searchInput)));
         dispatch(resultList(searchResult));
-        // e.preventDefault();
     }
 
+    
     useEffect(() => {
         if(location.pathname === '/') {
-            if(searchResult) {
+            if(searchList) {
                 setPicture(() => {
-                    return searchResult.map((photo, i) => {
+                    return searchList.map((photo, i) => {
                         return (
                             <div key={i} className='pictures__picBox'>
                                 <img id={`photo_${photo.id}`} className='photo' src={photo.urls.full} alt={photo.alt_description} /> 
@@ -71,7 +79,7 @@ export const Pictures_Section = () => {
                         );
                     });
                 });
-            } else {
+            } else if(photoList){
                 setPicture(() => {
                     return photoList.map((photo, i) => {
                         return (
@@ -142,7 +150,7 @@ export const Pictures_Section = () => {
 
             if(btn.id.match(pic.id) && btn.alt === 'favorite') {
                 if(favs !== null){
-                    if((btn.src).match('favoriteIcon.png') && !favs.includes(pic.id)){
+                    if((btn.src).match('favoriteIcon.png') && !favs.includes(pic.urls.full)){
                         btn.src = '../src/assets/FavIcon.png';
                         let favoritePic = {
                             id: pic.id,
@@ -175,7 +183,7 @@ export const Pictures_Section = () => {
                     }
                 }
                 
-            } else if (btn.id.match(pic.id) && btn.alt === 'favorite' && favs.includes(pic.id)) {
+            } else if (btn.id.match(pic.id) && btn.alt === 'favorite' && favs.includes(pic.urls.full)) {
                 btn.src = '../src/assets/FavIcon.png';
                 dispatch(removeFavorite(pic.id));
             } else if(btn.id.match(pic.id) && btn.alt === 'download') {
@@ -203,21 +211,17 @@ export const Pictures_Section = () => {
         });
     }
 
-    
-    console.log(searchResult)
-    console.log(searchList)
-
     return (
         
         <>
-            { isLoggin ? 
-                <p>Loggin...</p> :
+            { isLoading ? 
+                <p>Loading...</p> :
                 <section className="pictures">
                     <div className="searchBar">
-                        <form action="" method="get" className="searchBar__form" id='searchForm'>
+                        <form className="searchBar__form" id='searchForm' onSubmit={handleClickSearch}>
                             <div className="searchBar__form_components">
                                 <button className="searchBar__form_btn btn">
-                                    <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" onClick={handleClickSearch} />
+                                    <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" />
                                 </button>
                                 <input value={searchInput} id="search" className="searchBar__form_input" type="text" placeholder="Buscar imágenes..." onChange={(e) => setSearchInput(e.target.value)} />
                                 {<select value={select} name="form_select" id="form_select" className="searchBar__form_select" onChange={(e) => setSelect(e.target.value)}>
