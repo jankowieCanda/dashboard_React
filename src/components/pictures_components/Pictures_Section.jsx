@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { getSearchError, getSearchPhotos, getSearchStatus } from '../../features/search/searchSlice';
+import { getSearchError, getSearchPhotos, getSearchStatus, getSearchResult, resultList } from '../../features/search/searchSlice';
 import { useEffect, useState } from 'react';
 import { getSearchPhotosThunk } from '../../features/search/searchThunk';
 import { addFavorite, removeFavorite, getFavPhotos } from "../../features/favorite/favoriteSlice";
@@ -17,28 +17,61 @@ const myPhotosOptions = ['../src/assets/downloadIcon.png', '../src/assets/trashI
 export const Pictures_Section = () => {
     const dispatch = useDispatch();
     const photoList = useSelector(getSearchPhotos);
+    const searchList = useSelector(getSearchResult);
     const searchStatus = useSelector(getSearchStatus);
     const searchError = useSelector(getSearchError);
     const favPhotos = useSelector(getFavPhotos);
     const location = useLocation();
+    const [searchResult, setSearchResult] = useState('');
+    const [isLoggin, setIsLoggin] = useState(false);
 
     useEffect(() => {
         if(searchStatus === 'pending') {
             console.log('pending');
+            setIsLoggin(true);
         } else if(searchStatus === 'rejected') {
             console.log(`${searchStatus} - ${searchError}`);
         } else if(searchStatus === 'fulfilled') {
             console.log('fulfilled');
+            setSearchResult(photoList);
+            setIsLoggin(false);
         } else if(searchStatus === 'idle') {
             dispatch(getSearchPhotosThunk());
         }
     }, [dispatch, photoList, searchStatus]);
 
+   
     const [picture, setPicture] = useState();
+    const [searchInput, setSearchInput] = useState('');
+    const [select, setSelect] = useState('');
+
+    const handleClickSearch = (/* e */) => {
+        setSearchResult(() => searchResult.filter((item, i) => item.alt_description.includes(searchInput)));
+        dispatch(resultList(searchResult));
+        // e.preventDefault();
+    }
 
     useEffect(() => {
         if(location.pathname === '/') {
-            if(photoList) {
+            if(searchResult) {
+                setPicture(() => {
+                    return searchResult.map((photo, i) => {
+                        return (
+                            <div key={i} className='pictures__picBox'>
+                                <img id={`photo_${photo.id}`} className='photo' src={photo.urls.full} alt={photo.alt_description} /> 
+                                <div className="optionsBar">
+                                    <div className="iconBox">
+                                        <img id={`download_${photo.id}`} className='icon download' src={homeOptions[0]} alt='download' onClick={handleClick}/>
+                                    </div>
+                                    <div className="iconBox">
+                                        <img id={`favorite_${photo.id}`} className='icon favorite' src={homeOptions[1]} alt='favorite' onClick={handleClick}/>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    });
+                });
+            } else {
                 setPicture(() => {
                     return photoList.map((photo, i) => {
                         return (
@@ -96,8 +129,7 @@ export const Pictures_Section = () => {
                 });
             }
         }
-        
-    }, [photoList, favPhotos, location])
+    }, [photoList, searchList, favPhotos, location])
 
     const [showModal, setShowModal] = useState(false);
     const [id, setId] = useState('');
@@ -172,17 +204,37 @@ export const Pictures_Section = () => {
     }
 
     
+    console.log(searchResult)
+    console.log(searchList)
+
     return (
         
         <>
-            <section className="pictures">
-                {picture}
-                {showModal && createPortal (
-                    <Descriptions_Modal data={{id, url, alt}} setShowModal={setShowModal}/>,
-                    document.body
-                )
-                }
-            </section>
+            { isLoggin ? 
+                <p>Loggin...</p> :
+                <section className="pictures">
+                    <div className="searchBar">
+                        <form action="" method="get" className="searchBar__form" id='searchForm'>
+                            <div className="searchBar__form_components">
+                                <button className="searchBar__form_btn btn">
+                                    <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" onClick={handleClickSearch} />
+                                </button>
+                                <input value={searchInput} id="search" className="searchBar__form_input" type="text" placeholder="Buscar imágenes..." onChange={(e) => setSearchInput(e.target.value)} />
+                                {<select value={select} name="form_select" id="form_select" className="searchBar__form_select" onChange={(e) => setSelect(e.target.value)}>
+                                    <option value="All">Todas las fotos</option>
+                                    <option value="myPhotos">Mis fotos favoritas</option>
+                                </select>}
+                            </div>
+                        </form>
+                    </div>
+                    {picture}
+                    {showModal && createPortal (
+                        <Descriptions_Modal data={{id, url, alt}} setShowModal={setShowModal}/>,
+                        document.body
+                    )
+                    }
+                </section>
+            }
         </>
     )
 }

@@ -5,6 +5,56 @@
     width: 90%;
     margin: 0 auto;
 
+    .searchBar {
+        position: absolute;
+        top: 15em;
+        margin-bottom: $marginBottom;
+
+        &__form {
+            margin: 0 auto;
+
+            &_components {
+                width: 90%;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
+            &_btn {
+                width: 3em;
+                height: 1.5em;
+                background-color: $whiteColor;
+                border-top-left-radius: 0.5em;
+                border-bottom-left-radius: 0.5em;
+                border: none;
+                cursor: pointer;
+
+                &-icon {
+                    width: 50%;
+                }
+            }
+            &_btn:active {
+                transform: scale(0.9);
+                box-shadow: 2px 0px $whiteColor;
+            }
+            &_input {
+                width: 12em;
+                height: 2.5em;
+                border: none;
+                font-size: 0.5em;
+                text-align: center;
+            }
+            &_select {
+                width: 10em;
+                height: 1.5em;
+                border: none;
+                border-top-right-radius: 0.5em;
+                border-bottom-right-radius: 0.5em;
+                font-family: $nunitoFont;
+            }
+
+        }
+    }
+
     &__picBox {
         position: relative;
         width: 80%;
@@ -122,6 +172,31 @@
         align-content: flex-start;
         justify-content: center;
         column-gap: 0.5em;
+
+        .searchBar {
+
+            &__form {
+    
+                &_components {
+                    height: 5em;
+    
+                    .searchBar__form_btn {
+                        width: 3.5em;
+                        height: 2.5em;
+                    }
+                    .searchBar__form_input {
+                        width: 15em;
+                        height: 2.095em;
+                        font-size: 1em;
+                    }
+                    .searchBar__form_select {
+                        width: 12em;
+                        height: 2.5em;
+                        text-align: center;
+                    }
+                }
+            }
+        }
 
         &__border {
             width: 23%;
