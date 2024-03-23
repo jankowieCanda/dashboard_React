@@ -35,11 +35,9 @@ export const Pictures_Section = () => {
             setIsLoading(false);
         } else if(searchStatus === 'idle') {
             dispatch(getSearchPhotosThunk());
-            if(searchInput){
+            if(searchInput !== ''){
                 dispatch(getSearchResultThunk(searchInput))
                 setSearchResult(searchList['results']);
-            } else {
-                setSearchResult(photoList)
             }
         }
     }, [dispatch, searchList, photoList, searchStatus]);
@@ -61,7 +59,7 @@ export const Pictures_Section = () => {
     
     useEffect(() => {
         if(location.pathname === '/') {
-            if(searchList) {
+            if(searchList.length !== 0) {
                 setPicture(() => {
                     return searchList.map((photo, i) => {
                         return (
@@ -79,7 +77,7 @@ export const Pictures_Section = () => {
                         );
                     });
                 });
-            } else if(photoList){
+            } else if(photoList.length !== 0){
                 setPicture(() => {
                     return photoList.map((photo, i) => {
                         return (
@@ -100,7 +98,7 @@ export const Pictures_Section = () => {
             }
             
         } else if(location.pathname === '/myPhotos') {
-            if(favs) {
+            if(favs.length !== 0) {
                 setPicture(() => {
                     return favs.map((photo, i) => {
                         return (
@@ -135,6 +133,8 @@ export const Pictures_Section = () => {
                         );
                     });
                 });
+            } else {
+                setPicture(() => <p className='favs_empty'> No hay fotos favoritas...</p>)
             }
         }
     }, [photoList, searchList, favPhotos, location])
@@ -212,33 +212,32 @@ export const Pictures_Section = () => {
     }
 
     return (
-        
-        <>
-            { isLoading ? 
-                <p>Loading...</p> :
-                <section className="pictures">
-                    <div className="searchBar">
-                        <form className="searchBar__form" id='searchForm' onSubmit={handleClickSearch}>
-                            <div className="searchBar__form_components">
-                                <button className="searchBar__form_btn btn">
-                                    <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" />
-                                </button>
-                                <input value={searchInput} id="search" className="searchBar__form_input" type="text" placeholder="Buscar imágenes..." onChange={(e) => setSearchInput(e.target.value)} />
-                                {<select value={select} name="form_select" id="form_select" className="searchBar__form_select" onChange={(e) => setSelect(e.target.value)}>
-                                    <option value="All">Todas las fotos</option>
-                                    <option value="myPhotos">Mis fotos favoritas</option>
-                                </select>}
-                            </div>
-                        </form>
-                    </div>
-                    {picture}
-                    {showModal && createPortal (
-                        <Descriptions_Modal value={{id, url, alt}} setShowModal={setShowModal}/>,
-                        document.body
-                    )
-                    }
-                </section>
-            }
-        </>
-    )
+        <section className="pictures">
+        { isLoading ? 
+            <p className='loading'>Loading...</p> :
+            <>
+                <div className="searchBar">
+                    <form className="searchBar__form" id='searchForm' onSubmit={handleClickSearch}>
+                        <div className="searchBar__form_components">
+                            <button className="searchBar__form_btn btn">
+                                <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" />
+                            </button>
+                            <input value={searchInput} id="search" className="searchBar__form_input" type="text" placeholder="Buscar imágenes..." onChange={(e) => setSearchInput(e.target.value)} />
+                            {<select value={select} name="form_select" id="form_select" className="searchBar__form_select" onChange={(e) => setSelect(e.target.value)}>
+                                <option value="All">Todas las fotos</option>
+                                <option value="myPhotos">Mis fotos favoritas</option>
+                            </select>}
+                        </div>
+                    </form>
+                </div>
+                {picture}
+                {showModal && createPortal (
+                    <Descriptions_Modal value={{id, url, alt}} setShowModal={setShowModal}/>,
+                    document.body
+                )
+                }
+            </>
+        }
+        </section>
+    );
 }

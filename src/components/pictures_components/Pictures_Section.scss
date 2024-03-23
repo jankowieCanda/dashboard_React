@@ -4,7 +4,22 @@
 .pictures {
     width: 90%;
     margin: 0 auto;
-
+    min-height: 20em;
+    
+    .favs_empty {
+        font-family: $ubuntuMonoFont;
+        font-size: 2rem;
+        color: rgba(255, 0, 0, 0.779);
+        font-weight: 700;
+        margin-top: 3em;
+    }
+    .loading {
+        font-family: $ubuntuMonoFont;
+        font-size: 2rem;
+        color: #2723f782;
+        font-weight: 700;
+        margin-top: 3em;
+    }
     .searchBar {
         position: absolute;
         top: 8em;
