@@ -157,7 +157,7 @@ export const Pictures_Section = () => {
                             width: pic.width,
                             height: pic.height,
                             likes: pic.likes,
-                            created_at: pic.created_at,
+                            created_at: pic.created_at.toString(),
                             url: pic.urls.full,
                             alt_description: pic.alt_description
                         }
@@ -175,7 +175,7 @@ export const Pictures_Section = () => {
                             width: pic.width,
                             height: pic.height,
                             likes: pic.likes,
-                            created_at: pic.created_at,
+                            created_at: pic.created_at.toString(),
                             url: pic.urls.full,
                             alt_description: pic.alt_description
                         }
@@ -233,7 +233,7 @@ export const Pictures_Section = () => {
                     </div>
                     {picture}
                     {showModal && createPortal (
-                        <Descriptions_Modal data={{id, url, alt}} setShowModal={setShowModal}/>,
+                        <Descriptions_Modal value={{id, url, alt}} setShowModal={setShowModal}/>,
                         document.body
                     )
                     }

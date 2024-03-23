@@ -13,12 +13,11 @@ body {
     background: rgba(67, 101, 255, 0.614);
     border: none;
 
-
     &_form {
         position: fixed;
         top: 50%;
-        left: 10%;
-        width: 80%;
+        left: 15%;
+        width: 70%;
         text-align: center; 
         
         .form__boxAttribute {
@@ -34,14 +33,13 @@ body {
                 font-weight: 300;
             }
             input {
-                width: 16em;
+                width: 12em;
                 border: 1px solid rgb(67, 101, 255);
                 border-radius: 0.5em;
                 font-family: $ubuntuMonoFont;
                 font-size: 0.7rem;
                 text-align: center;
             }
-            
         }
         .form__btn {
             background-color: rgb(67, 101, 255);
@@ -64,7 +62,39 @@ body {
         .form__btn:active {
             transform: scale(0.9);
         }
-        
     }
-    
+}
+
+@media only screen and (min-width: 501px) {
+    .descriptions__modal {
+
+        &_form {
+            left: 25%;
+            width: 50%;
+        }
+    }
+}
+
+@media only screen and (min-width: 971px) {
+    .descriptions__modal {
+
+        &_form {
+            left: 35%;
+            width: 30%;
+            
+            .form__boxAttribute {
+                label {
+                    font-size: 1.5rem;
+                }
+                input {
+                    width: 15em;
+                }
+            }
+            .form__btn {
+                margin: 0 0.5em;
+                margin-top: $marginBottom * 2;
+                font-size: 1.3rem;
+            }
+        }
+    }
 }

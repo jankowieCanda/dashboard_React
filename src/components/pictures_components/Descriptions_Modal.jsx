@@ -7,7 +7,7 @@ let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
 
 
-export const Descriptions_Modal = ({id, url, alt_description, setShowModal}) => {
+export const Descriptions_Modal = ({value, setShowModal}) => {
     const dispatch = useDispatch()
     const [widthInput, setWidthInput] = useState('');
     const [heightInput, setHeightInput] = useState('');
@@ -16,9 +16,9 @@ export const Descriptions_Modal = ({id, url, alt_description, setShowModal}) => 
     let formData = {};
     
     
-    formData.id = id;
-    formData.url = url;
-    formData.alt_description = alt_description;
+    formData.id = value.id;
+    formData.url = value.url;
+    formData.alt_description = value.alt;
     formData.width = widthInput;
     formData.height = heightInput;
     formData.likes = likesInput;
@@ -29,6 +29,7 @@ export const Descriptions_Modal = ({id, url, alt_description, setShowModal}) => 
     
     const handleClickEditDescription = (e) => {
         const btnId = e.target.id;
+        console.log(formData.id)
         if(btnId.match('save')) {
             dispatch(changeDescriptions(formData));
             console.log(formData)
@@ -46,11 +47,11 @@ export const Descriptions_Modal = ({id, url, alt_description, setShowModal}) => 
         
 
         return (
-            <form value={formData} className="descriptions__modal_form" action='#' method="get" onChange={(e) => e.target.value}>
+            <form className="descriptions__modal_form" id={formData.id}>
                 <div className="form__boxAttribute">
-                    <input value={id} type='hidden' name="id" id="id" />
-                    <input value={url} type='hidden' name="url" id="url" />
-                    <input value={alt_description} type='hidden' name="alt_description" id="alt_description" />
+                    <input value={formData.id} type='hidden' name="id" id="id" />
+                    <input value={formData.url} type='hidden' name="url" id="url" />
+                    <input value={formData.alt_description} type='hidden' name="alt_description" id="alt_description" />
                     <label htmlFor="width"><span>Width:</span></label>
                     <input value={widthInput} type="text" name="width" id="width" onChange={(e) => setWidthInput(e.target.value)}/>
                 </div>

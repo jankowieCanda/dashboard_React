@@ -23,7 +23,7 @@ export const favoriteSlice = createSlice({
             state.favPhotos = JSON.parse(localStorage.getItem('favData'));
             let formData = action.payload
             state.favPhotos = state.favPhotos.map((photo, index) => {
-                if(photo.id === formData.id){
+                if(formData.id === photo.id){
                     if(photo.width !== formData.width && formData.width === '') {
                         formData.width = photo.width;
                         formData.height;
@@ -49,15 +49,14 @@ export const favoriteSlice = createSlice({
                         formData.width;
                         formData.height;
                         formData.likes;
-                        formData.created = photo.created_at;
+                        formData.created = photo.created_at.toString();
                         state.favPhotos.splice(index, 1, formData); 
                     }
                     state.favPhotos.splice(index, 1, formData)
                     console.log(state.favPhotos);
-                }  
-                localStorage.setItem('favData', JSON.stringify(state.favPhotos))      
+                    localStorage.setItem('favData', JSON.stringify(state.favPhotos))  
+                } 
             });
-
         }
     }
 });
