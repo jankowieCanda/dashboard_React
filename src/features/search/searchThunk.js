@@ -22,3 +22,12 @@ export const getSearchResultThunk = createAsyncThunk('search/getResult', async (
     return data;  
     
 });
+export const getSearchRandomThunk = createAsyncThunk('search/getRandom', async () => {
+   
+    const request = await fetch(`${url}${random}&${key}`);
+    const data = await request.json();
+    console.log(data);
+    return data;
+    
+    
+});

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getSearchError, getSearchPhotos, getSearchStatus, getSearchResult, resultList } from '../../features/search/searchSlice';
 import { useEffect, useState } from 'react';
-import { getSearchPhotosThunk, getSearchResultThunk } from '../../features/search/searchThunk';
+import { getSearchPhotosThunk, getSearchRandomThunk, getSearchResultThunk } from '../../features/search/searchThunk';
 import { addFavorite, removeFavorite, getFavPhotos } from "../../features/favorite/favoriteSlice";
 import './Pictures_Section.scss';
 import { useLocation } from 'react-router-dom';
@@ -54,9 +54,16 @@ export const Pictures_Section = () => {
 
     const handleClickSearch = (e) => {
         e.preventDefault();
-        dispatch(getSearchResultThunk(searchInput))
-        setSearchResult(() => searchList.filter((item, i) => item.alt_description.includes(searchInput)));
-        dispatch(resultList(searchResult));
+        if(searchInput !== ''){
+            dispatch(getSearchResultThunk(searchInput))
+            setSearchResult(() => searchList.filter((item, i) => item.alt_description.includes(searchInput)));
+            dispatch(resultList(searchResult));
+        } else {
+            dispatch(getSearchRandomThunk());
+            setSearchResult(searchList);
+            dispatch(resultList(searchResult));
+        }
+        
     }
 
     
