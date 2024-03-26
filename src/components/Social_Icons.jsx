@@ -1,6 +1,11 @@
+import instagramIcon from '../assets/instagramIcon.png';
+import facebookIcon from '../assets/facebookIcon.png';
+import twitterIcon from '../assets/twitterIcon.png';
+import pinterestIcon from '../assets/pinterestIcon.png';
+
 
 export const Social_Icons = () => {
-    let socialIcons = ['../src/assets/instagramIcon.png', '../src/assets/facebookIcon.png', '../src/assets/twitterIcon.png', '../src/assets/pinterestIcon.png'];
+    let socialIcons = [instagramIcon, facebookIcon, twitterIcon, pinterestIcon];
     let alt = ['instagram', 'facebook', 'twitter', 'pinterest'];
 
     const icon = socialIcons.map((item, i) => {

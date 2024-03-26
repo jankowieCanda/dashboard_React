@@ -12,6 +12,7 @@ import favoriteIcon from '../../assets/favoriteIcon.png';
 import favIcon from '../../assets/FavIcon.png';
 import trashIcon from '../../assets/trashIcon.png';
 import editIcon from '../../assets/editIcon.png';
+import searchBtnIcon from '../../assets/searchBtnIcon.png';
  
 let favData = localStorage.getItem('favData');
 let favs = JSON.parse(favData);
@@ -230,7 +231,7 @@ export const Pictures_Section = () => {
                     <form className="searchBar__form" id='searchForm' onSubmit={handleClickSearch}>
                         <div className="searchBar__form_components">
                             <button className="searchBar__form_btn btn">
-                                <img src="..\src\assets\searchBtnIcon.png" alt="Search Button" className="searchBar__form_btn-icon icon" />
+                                <img src={searchBtnIcon} alt="Search Button" className="searchBar__form_btn-icon icon" />
                             </button>
                             <input value={searchInput} id="search" className="searchBar__form_input" type="text" placeholder="Buscar imágenes..." onChange={(e) => setSearchInput(e.target.value)} />
                             {<select value={select} name="form_select" id="form_select" className="searchBar__form_select" onChange={(e) => setSelect(e.target.value)}>
